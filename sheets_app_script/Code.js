@@ -137,8 +137,6 @@ function fillAllScryfallQueries() {
   }
 }
 
-
-
 function countScryfallMatches(query) {
   try {
     let results = SCRYFALL(query, "name");
@@ -398,89 +396,3 @@ function getScryfallImportedCard(name) {
   const cards = getScryfallImportedCards();
   return cards.filter((card => {return card['name'] == name;}))[0]
 }
-
-// 🤠 = Outlaw Creature
-// 🙂 = Non-Outlaw Creature
-// 🐴 = Mount Creature
-// ⚡ = Instant
-// ✨ = Sorcery
-// 🧙‍♂️ = Planeswalker
-// 🎉 = Enchantment
-// 🗻 = Land
-// 🔨 = Artifact
-// 🚗 = Vehicle
-// 🔪 = Equipment
-// TODO (need other data)
-// 📜 = Plot
-// 🤹‍♀️ = Spree
-// /**
-//  * Get the cards in the pool that could have been your commander in the league, but are MIA
-//  *
-//  * @return                                List of potenial commanders that are MIA
-//  * @customfunction
-//  */
-// function makeEmojiType(name) {
-//   const importedCard = getScryfallImportedCard(name);
-//   const type_line = importedCard['type_line'];
-//   const oracle_text = importedCard['oracle_text'];
-
-//   const isCreature = (type_line.indexOf('Creature') >= 0);
-//   // const isLegendary = (type_line.indexOf('Legendary') >= 0);
-//   const isArtifact = (type_line.indexOf('Artifact') >= 0);
-
-//   emoji_type = ""
-
-//   if (isCreature) {
-//     const isOutlaw = (type_line.indexOf('Assassin') >= 0 || type_line.indexOf('Rogue') >= 0 || type_line.indexOf('Warlock') >= 0 || type_line.indexOf('Mercenary') >= 0 || type_line.indexOf('Pirate') >= 0);
-//     if (isOutlaw) {
-//       emoji_type += "🤠"
-//     } else {
-//       emoji_type += "🙂"
-//     }
-//     if (isArtifact) {
-//       emoji_type += "🔨"
-//     }
-//     if (type_line.indexOf('Mount') >= 0) {
-//       emoji_type += "🐴"
-//     } 
-//   } else {
-//     const isInstant = (type_line.indexOf('Instant') >= 0);
-//     const isSorcery = (type_line.indexOf('Sorcery') >= 0);
-//     const isEnchantment = (type_line.indexOf('Enchantment') >= 0);
-//     const isPlaneswalker = (type_line.indexOf('Planeswalker') >= 0);
-//     const isLand = (type_line.indexOf('Land') >= 0);
-
-//     if (isArtifact) {
-//       emoji_type += "🔨"
-//       if (type_line.indexOf('Vehicle') >= 0) {
-//         emoji_type += "🚗"
-//       } 
-//       if (type_line.indexOf('Equipment') >= 0) {
-//         emoji_type += "🔪"
-//       }
-//     }
-//     if (isInstant) {
-//       emoji_type += "⚡"
-//       if (oracle_text.indexOf('Spree') >= 0) {
-//         emoji_type += "🤹‍♀️"
-//       }
-//     } else if (isSorcery) {
-//       emoji_type += "✨"
-//       if (oracle_text.indexOf('Spree') >= 0) {
-//         emoji_type += "🤹‍♀️"
-//       }
-//     } else if (isPlaneswalker) {
-//       emoji_type += "🧙‍♂️"
-//     } else if (isEnchantment) {
-//       emoji_type += "🎉"
-//     } else if (isLand) {
-//       emoji_type += "🗻"
-//     }
-//   }
-//   if (oracle_text.indexOf('Plot') >= 0 || oracle_text.indexOf('plotted') >= 0 || oracle_text.indexOf('plot') >= 0) {
-//     emoji_type += "📜"
-//   }
-
-//   return emoji_type;
-// }
-
