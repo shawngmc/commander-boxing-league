@@ -12,21 +12,21 @@ Card Sidebar
 
 function onOpen() {
   SpreadsheetApp.getUi()
-      .createMenu('MTG Tools')
-      .addItem('Open Card View', 'showSidebar')
-      .addToUi();
+    .createMenu('MTG Tools')
+    .addItem('Open Card View', 'showSidebar')
+    .addToUi();
 }
 
 function showSidebar() {
   // You can use a template to inject initialization data
   var html = HtmlService
-      .createTemplateFromFile('Sidebar')
-      .evaluate()
-      .setTitle('Card View')
-      .setWidth(300);
+    .createTemplateFromFile('Sidebar')
+    .evaluate()
+    .setTitle('Card View')
+    .setWidth(300);
 
   SpreadsheetApp.getUi()
-      .showSidebar(html);
+    .showSidebar(html);
 }
 
 function onSelectionChange() {
@@ -110,7 +110,7 @@ function getCardDBLinkByName(card_db, card_name) {
       default:
         throw new Error("Invalid Card DB");
     }
-  } 
+  }
 }
 
 /***********************************************************************
@@ -145,7 +145,7 @@ function countScryfallMatches(query) {
   try {
     let results = SCRYFALL(query, "name");
     return results.length;
-  } catch (error) {    
+  } catch (error) {
     if (error.toString().includes("404")) {
       return 0;
     } else {
@@ -166,7 +166,7 @@ DeckList/Test Hand Functions
 function createDeckList() {
   const sheet = SpreadsheetApp.getActive().getActiveSheet();
   let cards = [];
-  
+
   // Get the normal card range
   let uniqueCards = sheet.getRange(DEFAULT_DECK_RANGES['card_list']).getValues().flat();
   for (var idx in uniqueCards) {
@@ -257,7 +257,7 @@ function checkColorIdentityTriggered() {
   }
   const allowedColorIdentities = findPermutations(rawColorIdentity.split(''));
   console.log(`allowedColorIdentities: ${allowedColorIdentities}`);
-  
+
   // Check every card for a valid permutation
   let badCards = [];
   deckCards.forEach(deckCard => {
@@ -289,7 +289,7 @@ function getPool() {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   const sheet = spreadsheet.getSheetByName("Pool");
   let cards = sheet.getRange("A:N").getValues();
-  
+
   cards = cards.map(card => mapPoolCard(card));
 
   return cards;
@@ -324,7 +324,7 @@ function createCommanderList() {
   let mono_cards = cards.filter((card) => {
     return card['color_identity'].length == 1;
   });
-  
+
   let mono_pairs = [];
   for (let i = 0; i < mono_cards.length; i++) {
     for (let j = i + 1; j < mono_cards.length; j++) {
@@ -336,7 +336,7 @@ function createCommanderList() {
   });
 
   let results = [];
-  results.push.apply(results, multicolor_cards.map(card => {return [card["name"], "", card["color_identity"]]}));
+  results.push.apply(results, multicolor_cards.map(card => { return [card["name"], "", card["color_identity"]] }));
   for (let i = 0; i < mono_pairs.length; i++) {
     let cmdr_one = mono_pairs[i][0];
     let cmdr_two = mono_pairs[i][1];
@@ -364,30 +364,30 @@ function createMissingCommanderList() {
   cards = cards.filter((card) => {
     return (card['type_line'].indexOf("Legendary")) >= 0 && (card['type_line'].indexOf("Creature") >= 0);
   });
-  return cards.map(card => {return [card["name"], card["color_identity"]]});
+  return cards.map(card => { return [card["name"], card["color_identity"]] });
 }
 
 function mapScryfallCard(rawCard) {
   let obj = {};
-    for (let i = 0; i < imported_scryfall_fields.length; i++) {
-      obj[imported_scryfall_fields[i]] = rawCard[i];
-    }
-    return obj;
+  for (let i = 0; i < imported_scryfall_fields.length; i++) {
+    obj[imported_scryfall_fields[i]] = rawCard[i];
+  }
+  return obj;
 }
 
 function mapPoolCard(rawCard) {
   let obj = {};
-    for (let i = 0; i < pool_fields.length; i++) {
-      obj[pool_fields[i]] = rawCard[i];
-    }
-    return obj;
+  for (let i = 0; i < pool_fields.length; i++) {
+    obj[pool_fields[i]] = rawCard[i];
+  }
+  return obj;
 }
 
 function getScryfallImportedCards() {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   const sheet = spreadsheet.getSheetByName("ImportedScryfall");
   let cards = sheet.getDataRange().getValues();
-  
+
   cards = cards.map(mapScryfallCard);
 
   return cards;
@@ -395,5 +395,5 @@ function getScryfallImportedCards() {
 
 function getScryfallImportedCard(name) {
   const cards = getScryfallImportedCards();
-  return cards.filter((card => {return card['name'] == name;}))[0]
+  return cards.filter((card => { return card['name'] == name; }))[0]
 }
