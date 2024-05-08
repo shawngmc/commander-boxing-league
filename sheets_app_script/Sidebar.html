@@ -7,7 +7,7 @@
   <body>
     <div id="card">
       <h3 id="card-name"></h3>
-      <img id="card-image" src="" width="100%"/>
+      <img id="card-image" src="" width="100%" onClick="swapImage(event)"/>
       <h5 id="card-type"></h5>
       <hr/>
       <span id="card-text"></span>
@@ -37,6 +37,13 @@
         isFocused = true;
         setLocation();
       });
+      function swapImage(event) {
+        let element = event.target;
+        let dataset = element.dataset;
+        if ('image2' in dataset && dataset.image2 !== null && dataset.image2.trim().length > 0) {
+          element.src = ((element.src === dataset.image1) ? dataset.image2 : dataset.image1);
+        }
+      };
 
       function setLocation() {
         google.script.run
@@ -51,14 +58,9 @@
                   if ('border_crop_image_uri_2' in result) {
                     card_image_element.dataset.image1 = result['border_crop_image_uri'];
                     card_image_element.dataset.image2 = result['border_crop_image_uri_2'];
-                    console.log("yeah")
-                    card_image_element.addEventListener("click", function() {
-                      console.log("yo")
-                      this.src = ((this.src === card_image_element.dataset.image1) ? card_image_element.dataset.image2 : card_image_element.dataset.image1);
-                    }, false);
                   } else {
-                    console.log("no")
-                    document.getElementById("card-image").onClick = null;
+                    card_image_element.dataset.image1 = null;
+                    card_image_element.dataset.image2 = null;
                   }
                   document.getElementById("card-name").innerText = result['name'];
                   document.getElementById("card-text").innerText = result['oracle_text'];
