@@ -1,13 +1,21 @@
 ## TODO:
-- Convert Std Set Stats query to use Imported Scryfall
-- Find a way to integrate scryfall 'tagger' data?
-- Integrate card symbols via the API: https://scryfall.com/docs/api/card-symbols/all
-- Card View: Improve Flip indicator
-- Card View: Add flip change for non-image attribs
-- Decks: Add Color Identity Check Button to Draft/W2/W1 decks
-- Find a way to automate dual-commander strategy summaries
-- Backup Spreadsheet Content
-- Cleanup old CSVs and cached json automatically
+- Set Stats
+  - Convert Std Set Stats query to use Imported Scryfall
+- Card View
+  - Improve Flip indicator
+  - Add flip change for non-image attribs
+- Deck Analysis
+  - Add Color Identity Check Button to Draft/W2/W1 decks
+- Preprocessor
+  - Cleanup old CSVs and cached json automatically
+- Git Repo
+  - Backup Spreadsheet Content in repo
+  - Backup Decklists in repo
+- Miscellaneous
+  - Integrate card symbols via the API: https://scryfall.com/docs/api/card-symbols/all
+  - Find a way to automate dual-commander strategy summaries
+  - Find a way to integrate scryfall 'tagger' data?
+
 
 ## 2024-05-07
 - Decks: Added Color Identity Check (need Button added in Draft/W2/W1 decks)
