@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<!-- Based on https://stackoverflow.com/a/58552334/3245188 -->
+<html>
+  <head>
+    <base target="_top">
+  </head>
+  <body>
+    <div id="card">
+      <h3 id="card-name"></h3>
+      <img id="card-image" src="" width="100%"/>
+      <h5 id="card-type"></h5>
+      <hr/>
+      <span id="card-text"></span>
+      <hr/>
+      <b>Links</b>
+      <ul>
+        <li><a id="scryfall-link" href="" target="_blank">Scryfall</a>
+        <li><a id="edhrec-link" href="" target="_blank">EDHREC</a>
+        <li><a id="gatherer-link" href="" target="_blank">Gatherer</a>
+      </ul>
+    </div>
+    <div id="message">
+      <h3>No card name selected!</h3>
+      (Top-Left cell of multi-cell)
+    </div>
+    <button onClick="setLocation()">Reload/Resync</button>
+    <script>
+      // imported_scryfall_fields = ["id", "oracle_id", "name", "mana_cost", "cmc", "type_line", "power", "toughness", "colors", "color_identity", "keywords", "set", "collector_number", "rarity", "edhrec_rank", "multiverse_id", "border_crop_image_uri", "edhrec_url", "gatherer_url", "scryfall_url", "emoji_type", "category", "oracle_text", "produced_mana", "loyalty", "color_indicator"]
+      let card_data = null;
+
+      // Stop the loop when the window isn't focused, and restart when it comes back to focus.
+      var isFocused = true;
+      window.addEventListener("blur", function() {
+        isFocused = false;
+      });
+      window.addEventListener("focus",function() {
+        isFocused = true;
+        setLocation();
+      });
+
+      function setLocation() {
+        google.script.run
+          .withSuccessHandler(function (result) {
+            if (result != null) {
+              if (result != card_data) {
+                  card_data = result;
+                  document.getElementById("message").style.visibility = "hidden";
+                  document.getElementById("card").style.visibility = "visible";
+                  document.getElementById("card-image").src = result['border_crop_image_uri'];
+                  document.getElementById("card-name").innerText = result['name'];
+                  document.getElementById("card-text").innerText = result['oracle_text'];
+                  document.getElementById("card-type").innerText = result['type_line'];
+                  document.getElementById("scryfall-link").href = result['scryfall_url'];
+                  document.getElementById("edhrec-link").href = result['edhrec_url'];
+                  document.getElementById("gatherer-link").href = result['gatherer_url'];
+              }
+            } else {
+              document.getElementById("message").style.visibility = "visible";
+              document.getElementById("card").style.visibility = "hidden";
+              card_data = null;
+            }
+            if (isFocused) {
+              setTimeout(setLocation, 1000);
+            }
+          })
+          .withFailureHandler(function (err) {
+            if (isFocused) {
+              setTimeout(setLocation, 500);
+            }
+          })
+          .getCurrentSelectedCard();
+
+      }
+
+      setLocation();
+
+    </script>
+  </body>
+</html>
