@@ -2,7 +2,7 @@
 - Convert Std Set Stats query to use Imported Scryfall
 - Find a way to integrate scryfall 'tagger' data?
 - Integrate card symbols via the API: https://scryfall.com/docs/api/card-symbols/all
-- Card View: Add flip indicator
+- Card View: Improve Flip indicator
 - Card View: Add flip change for non-image attribs
 - Decks: Add Color Identity Check Button to Draft/W2/W1 decks
 - Find a way to automate dual-commander strategy summaries

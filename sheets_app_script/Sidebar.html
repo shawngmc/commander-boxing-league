@@ -3,11 +3,18 @@
 <html>
   <head>
     <base target="_top">
+    <style>
+      .flippable-card-image:after {
+        content: "Click card to flip";
+      }
+    </style>
   </head>
   <body>
     <div id="card">
       <h3 id="card-name"></h3>
+      <span id="card-image-container">
       <img id="card-image" src="" width="100%" onClick="swapImage(event)"/>
+      </span>
       <h5 id="card-type"></h5>
       <hr/>
       <span id="card-text"></span>
@@ -58,7 +65,9 @@
                   if ('border_crop_image_uri_2' in result) {
                     card_image_element.dataset.image1 = result['border_crop_image_uri'];
                     card_image_element.dataset.image2 = result['border_crop_image_uri_2'];
+                    document.getElementById("card-image-container").classList.add("flippable-card-image");
                   } else {
+                    document.getElementById("card-image-container").classList.remove("flippable-card-image");
                     card_image_element.dataset.image1 = null;
                     card_image_element.dataset.image2 = null;
                   }
