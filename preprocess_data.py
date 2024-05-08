@@ -86,7 +86,7 @@ for card in filtered_cards:
         filtered_cards.remove(card)
 
 # Transforms to make data 1-D
-print("Transforming card objects...")
+print("Transforming card objects by merging array keys...")
 def transform_card(card):
     if 'multiverse_ids' in card and len(card['multiverse_ids']) > 0:
         card['multiverse_id'] = card['multiverse_ids'][0]
@@ -171,14 +171,43 @@ clean_list = [
     "flavor_name",
     "variation_of",
     "tcgplayer_etched_id",
-    "scryfall_uri"
+    "scryfall_uri",
+    "image_uris_2"
 ]
+
+face_copy_keys = ["cmc", "colors", "image_uris", "mana_cost", "oracle_text", "power", "toughness", "type_line"]
+
+color_abbrev_dict = {
+    "W": "White",
+    "U": "Blue",
+    "B": "Black",
+    "R": "Red",
+    "G": "Green"
+}
 
 print("Cleaning unused card data...")
 for card in filtered_cards:
+
+    # Collapse card faces
+    if 'card_faces' in card:
+        card['is_double_faced'] = True
+        face_one = card['card_faces'][0]
+        for key in face_copy_keys:
+            if key in face_one:
+                card[key] = face_one[key]
+        face_two = card['card_faces'][1]
+        for key in face_copy_keys:
+            if key in face_two:
+                card[f"{key}_2"] = face_two[key]
+        del card['card_faces']
+
     # Keep the border-crop URL only
     if 'image_uris' in card:
         card['border_crop_image_uri'] = card['image_uris']['border_crop']
+    if 'image_uris_2' in card:
+        card['border_crop_image_uri_2'] = card['image_uris_2']['border_crop']
+
+
     # Keep the edhrec URI
     if 'related_uris' in card:
         if 'edhrec' in card['related_uris']:
@@ -192,29 +221,6 @@ for card in filtered_cards:
     for key in clean_list:
         if key in card:
             del card[key]
-    
-    if 'card_faces' in card:
-        for card_face in card['card_faces']:
-            for key in clean_list:
-                if key in card_face:
-                    del card_face[key]
-
-color_abbrev_dict = {
-    "W": "White",
-    "U": "Blue",
-    "B": "Black",
-    "R": "Red",
-    "G": "Green"
-}
-
-# Make a CSV
-print("Creating modified CSV dataset...")
-for card in filtered_cards:
-
-    # Delete card faces
-    # TODO: Merge data in
-    if 'card_faces' in card:
-        del card['card_faces']
 
     # Add the 'emoji-type' and category (for row coloring)
     emoji_type = ""
@@ -270,8 +276,11 @@ for card in filtered_cards:
         else:
             category = color_abbrev_dict.get(color_identity)
     card['category'] = category
+    
+# Make a CSV
+print("Creating modified CSV dataset...")
 
-# Get all card keys
+# Get all card keys (column headers)
 keys = []
 for card in filtered_cards:
     card_keys = card.keys()
@@ -284,3 +293,6 @@ with open(f"otj-boxing-cards-{datetime.now().strftime('%Y-%m-%d')}.csv", 'w', ne
     dict_writer = csv.DictWriter(output_file, keys)
     dict_writer.writeheader()
     dict_writer.writerows(filtered_cards)
+
+print("The updated key list is: ")
+print("\"" + "\", \"".join(keys) + "\"")

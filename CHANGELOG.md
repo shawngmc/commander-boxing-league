@@ -2,11 +2,10 @@
 - Convert Std Set Stats query to use Imported Scryfall
 - Find a way to integrate scryfall 'tagger' data?
 - Integrate card symbols via the API: https://scryfall.com/docs/api/card-symbols/all
-- Prep script: handle 2-faced cards - images and oracle_text - make a double-faced flag?
-- Sidebar: handle 2-faced cards (requires data update)
+- Card View: Add flip indicator
+- Card View: Add flip change for non-image attribs
 - Decks: Add Color Identity Check Button to Draft/W2/W1 decks
 - Find a way to automate dual-commander strategy summaries
-- Backup Spreadsheet Apps Script
 - Backup Spreadsheet Content
 - Cleanup old CSVs and cached json automatically
 
@@ -14,6 +13,10 @@
 - Decks: Added Color Identity Check (need Button added in Draft/W2/W1 decks)
 - Created OTJ Boxing League GitHub repo
 - Preprocessor: Now uses Scryfall bulk_data API endpoint from the docs (https://scryfall.com/docs/api/bulk-data), with caching of actual downloaded file
+- Preprocessor: Preserves double-faced card data
+- Card View: Click to flip image 
+- Git Repo: Added Apps Script
+- Apps Script: Initial lint/cleanup pass
 
 ## 2024-05-06
 - Sidebar: Added external links

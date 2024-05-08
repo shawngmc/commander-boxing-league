@@ -25,7 +25,7 @@
     </div>
     <button onClick="setLocation()">Reload/Resync</button>
     <script>
-      // imported_scryfall_fields = ["id", "oracle_id", "name", "mana_cost", "cmc", "type_line", "power", "toughness", "colors", "color_identity", "keywords", "set", "collector_number", "rarity", "edhrec_rank", "multiverse_id", "border_crop_image_uri", "edhrec_url", "gatherer_url", "scryfall_url", "emoji_type", "category", "oracle_text", "produced_mana", "loyalty", "color_indicator"]
+      // imported_scryfall_fields = ["id", "oracle_id", "name", "mana_cost", "cmc", "type_line", "power", "toughness", "colors", "color_identity", "keywords", "set", "collector_number", "rarity", "edhrec_rank", "multiverse_id", "is_double_faced", "oracle_text", "mana_cost_2", "oracle_text_2", "type_line_2", "border_crop_image_uri", "edhrec_url", "gatherer_url", "scryfall_url", "emoji_type", "category", "produced_mana", "colors_2", "border_crop_image_uri_2", "loyalty", "color_indicator", "power_2", "toughness_2", "cmc_2"]
       let card_data = null;
 
       // Stop the loop when the window isn't focused, and restart when it comes back to focus.
@@ -42,11 +42,24 @@
         google.script.run
           .withSuccessHandler(function (result) {
             if (result != null) {
-              if (result != card_data) {
+              if (card_data === null || result['name'] !== card_data['name']) {
                   card_data = result;
                   document.getElementById("message").style.visibility = "hidden";
                   document.getElementById("card").style.visibility = "visible";
-                  document.getElementById("card-image").src = result['border_crop_image_uri'];
+                  let card_image_element = document.getElementById("card-image");
+                  card_image_element.src = result['border_crop_image_uri'];
+                  if ('border_crop_image_uri_2' in result) {
+                    card_image_element.dataset.image1 = result['border_crop_image_uri'];
+                    card_image_element.dataset.image2 = result['border_crop_image_uri_2'];
+                    console.log("yeah")
+                    card_image_element.addEventListener("click", function() {
+                      console.log("yo")
+                      this.src = ((this.src === card_image_element.dataset.image1) ? card_image_element.dataset.image2 : card_image_element.dataset.image1);
+                    }, false);
+                  } else {
+                    console.log("no")
+                    document.getElementById("card-image").onClick = null;
+                  }
                   document.getElementById("card-name").innerText = result['name'];
                   document.getElementById("card-text").innerText = result['oracle_text'];
                   document.getElementById("card-type").innerText = result['type_line'];

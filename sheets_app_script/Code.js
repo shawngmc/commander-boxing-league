@@ -283,7 +283,7 @@ function checkColorIdentityTriggered() {
 /***********************************************************************
 Commander Listing
 ***********************************************************************/
-const imported_scryfall_fields = ["id", "oracle_id", "name", "mana_cost", "cmc", "type_line", "power", "toughness", "colors", "color_identity", "keywords", "set", "collector_number", "rarity", "edhrec_rank", "multiverse_id", "border_crop_image_uri", "edhrec_url", "gatherer_url", "scryfall_url", "emoji_type", "category", "oracle_text", "produced_mana", "loyalty", "color_indicator"]
+const imported_scryfall_fields = ["id", "oracle_id", "name", "mana_cost", "cmc", "type_line", "power", "toughness", "colors", "color_identity", "keywords", "set", "collector_number", "rarity", "edhrec_rank", "multiverse_id", "is_double_faced", "oracle_text", "mana_cost_2", "oracle_text_2", "type_line_2", "border_crop_image_uri", "edhrec_url", "gatherer_url", "scryfall_url", "emoji_type", "category", "produced_mana", "colors_2", "border_crop_image_uri_2", "loyalty", "color_indicator", "power_2", "toughness_2", "cmc_2"]
 const pool_fields = ["name", "in_pool", "set", "rarity", "type_helper", "mana_cost", "cmc", "color_identity", "edhrec_link", "category", "count", "type_line", "rating", "scryfall_url"]
 function getPool() {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
