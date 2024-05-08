@@ -159,12 +159,12 @@ function linkToScryfallQuery(query) {
 DeckList/Test Hand Functions
 ***********************************************************************/
 
-function createDeckList(card_range, basic_land_range, exclude_commander_range) {
+function createDeckList(exclude_commander_range) {
   const sheet = SpreadsheetApp.getActive().getActiveSheet();
   let cards = [];
   
   // Get the normal card range
-  let uniqueCards = sheet.getRange(card_range).getValues().flat();
+  let uniqueCards = sheet.getRange(DEFAULT_DECK_RANGES['card_list']).getValues().flat();
   for (var idx in uniqueCards) {
     if (uniqueCards[idx].trim().length > 0) {
       cards.push(uniqueCards[idx].trim());
@@ -172,20 +172,18 @@ function createDeckList(card_range, basic_land_range, exclude_commander_range) {
   }
 
   // Add the basic lands
-  let basicLandValues = sheet.getRange(basic_land_range).getValues();
+  let basicLandValues = sheet.getRange(DEFAULT_DECK_RANGES['basic_lands']).getValues();
   for (var row in basicLandValues) {
     for (let i = 0; i < basicLandValues[row][1]; i++) {
       cards.push(basicLandValues[row][0]);
     }
   }
 
-  if (exclude_commander_range) {
-    let commanders = sheet.getRange(exclude_commander_range).getValues().flat();
-    for (let i = 0; i < commanders.length; i++) {
-      var index = cards.indexOf(commanders[i]);
-      if (index !== -1) {
-        cards.splice(index, 1);
-      }
+  let commanders = sheet.getRange(DEFAULT_DECK_RANGES['commander_list']).getValues().flat();
+  for (let i = 0; i < commanders.length; i++) {
+    var index = cards.indexOf(commanders[i]);
+    if (index !== -1) {
+      cards.splice(index, 1);
     }
   }
 
@@ -213,7 +211,7 @@ const DEFAULT_DECK_RANGES = {
 function drawCardsTriggered() {
   const sheet = SpreadsheetApp.getActive().getActiveSheet();
 
-  const cards = createDeckList(DEFAULT_DECK_RANGES['card_list'], DEFAULT_DECK_RANGES['basic_lands'], DEFAULT_DECK_RANGES['commander_list']);
+  const cards = createDeckList();
   const draws = pullHandAndFiveDraws(cards);
 
   const startOutputRange = sheet.getRange(DEFAULT_DECK_RANGES['draw_output_start']);
@@ -228,7 +226,7 @@ function drawCardsTriggered() {
 function checkColorIdentityTriggered() {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   const deckSheet = spreadsheet.getActiveSheet();
-  let deckCards = createDeckList(DEFAULT_DECK_RANGES['card_list'], DEFAULT_DECK_RANGES['basic_lands'], DEFAULT_DECK_RANGES['commander_list']);
+  let deckCards = createDeckList();
   const poolCards = getPool();
   deckCards = deckCards.map(card_name => poolCards.filter(poolCard => poolCard['name'] === card_name).flat()).flat();
   let commanders = deckSheet.getRange(DEFAULT_DECK_RANGES['commander_list']).getValues().flat().filter(commander => commander);
