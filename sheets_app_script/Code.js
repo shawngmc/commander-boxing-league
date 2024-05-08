@@ -1,5 +1,11 @@
 //@OnlyCurrentDoc
 
+/*global SpreadsheetApp*/
+/*global HtmlService*/
+/*global CacheService*/
+
+/*global SCRYFALL*/
+
 /***********************************************************************
 Card Sidebar
 ***********************************************************************/
@@ -23,7 +29,7 @@ function showSidebar() {
       .showSidebar(html);
 }
 
-function onSelectionChange(e) {
+function onSelectionChange() {
   // Update the cached selected card
   const cache = CacheService.getUserCache();
   const selected_value = SpreadsheetApp.getActiveRange().getValue();
@@ -46,13 +52,12 @@ function getCurrentSelectedCard() {
   var cache = CacheService.getUserCache();
   let card = cache.get('selectedCard');
   console.log(card);
-  if (card != null) {
+  if (card !== null) {
     card = JSON.parse(card);
   }
   console.log(card);
   return card;
 }
-
 
 function getCardByName(name) {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
@@ -61,14 +66,13 @@ function getCardByName(name) {
     .createTextFinder(name)
     .matchEntireCell(true)
     .findNext();
-  if (matchRange != null) {
+  if (matchRange !== null) {
     let card_data = sheet.getRange(`${matchRange.getRowIndex()}:${matchRange.getRowIndex()}`).getValues().flat();
     return mapScryfallCard(card_data);
   } else {
     return null;
   }
 }
-
 
 /***********************************************************************
 Card Name Link
@@ -159,7 +163,7 @@ function linkToScryfallQuery(query) {
 DeckList/Test Hand Functions
 ***********************************************************************/
 
-function createDeckList(exclude_commander_range) {
+function createDeckList() {
   const sheet = SpreadsheetApp.getActive().getActiveSheet();
   let cards = [];
   
@@ -276,12 +280,11 @@ function checkColorIdentityTriggered() {
   }
 }
 
-
 /***********************************************************************
 Commander Listing
 ***********************************************************************/
-imported_scryfall_fields = ["id", "oracle_id", "name", "mana_cost", "cmc", "type_line", "power", "toughness", "colors", "color_identity", "keywords", "set", "collector_number", "rarity", "edhrec_rank", "multiverse_id", "border_crop_image_uri", "edhrec_url", "gatherer_url", "scryfall_url", "emoji_type", "category", "oracle_text", "produced_mana", "loyalty", "color_indicator"]
-pool_fields = ["name", "in_pool", "set", "rarity", "type_helper", "mana_cost", "cmc", "color_identity", "edhrec_link", "category", "count", "type_line", "rating", "scryfall_url"]
+const imported_scryfall_fields = ["id", "oracle_id", "name", "mana_cost", "cmc", "type_line", "power", "toughness", "colors", "color_identity", "keywords", "set", "collector_number", "rarity", "edhrec_rank", "multiverse_id", "border_crop_image_uri", "edhrec_url", "gatherer_url", "scryfall_url", "emoji_type", "category", "oracle_text", "produced_mana", "loyalty", "color_indicator"]
+const pool_fields = ["name", "in_pool", "set", "rarity", "type_helper", "mana_cost", "cmc", "color_identity", "edhrec_link", "category", "count", "type_line", "rating", "scryfall_url"]
 function getPool() {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   const sheet = spreadsheet.getSheetByName("Pool");
@@ -317,7 +320,7 @@ function createCommanderList() {
     return (card['type_line'].indexOf("Legendary")) >= 0 && (card['type_line'].indexOf("Creature") >= 0);
   });
 
-  // TODO: Add dual-mono permutations
+  // Add dual-mono permutations
   let mono_cards = cards.filter((card) => {
     return card['color_identity'].length == 1;
   });
@@ -332,7 +335,7 @@ function createCommanderList() {
     return card['color_identity'].length > 1;
   });
 
-  results = [];
+  let results = [];
   results.push.apply(results, multicolor_cards.map(card => {return [card["name"], "", card["color_identity"]]}));
   for (let i = 0; i < mono_pairs.length; i++) {
     let cmdr_one = mono_pairs[i][0];
@@ -355,7 +358,7 @@ function createMissingCommanderList() {
   let cards = getPool();
   // Filter to unowned cards
   cards = cards.filter((card) => {
-    return card['count'] = 0 || card['count'] === '' || card['count'] === undefined;
+    return card['count'] == 0 || card['count'] === '' || card['count'] === undefined;
   })
   // Limit to cards that are legendary creatures
   cards = cards.filter((card) => {
