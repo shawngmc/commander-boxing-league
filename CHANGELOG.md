@@ -2,8 +2,7 @@
 - Set Stats
   - Convert Std Set Stats query to use Imported Scryfall
 - Card View
-  - Make links absolutely positioned at the bottom with icons
-  - Add mana cost of 'side'
+  - Parse oracle text and interject icon images
 - Deck Analysis
   - Add Color Identity Check Button to Draft/W2/W1 decks
 - Preprocessor
@@ -25,6 +24,7 @@
   - Some rearranging to keep visual position consistency
   - Fixed bug where selected card of 'name' was treated as a card
   - Added Mana Cost using symbols from Scryfall API: https://scryfall.com/docs/api/card-symbols/all
+  - Moved links to the bottom, changed to icons
 
 
 ## 2024-05-07
