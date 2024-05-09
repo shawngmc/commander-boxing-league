@@ -1,9 +1,6 @@
 ## TODO:
 - Set Stats
   - Convert Std Set Stats query to use Imported Scryfall
-- Card View
-  - Improve Flip indicator
-  - Add flip change for non-image attribs
 - Deck Analysis
   - Add Color Identity Check Button to Draft/W2/W1 decks
 - Preprocessor
@@ -15,6 +12,15 @@
   - Integrate card symbols via the API: https://scryfall.com/docs/api/card-symbols/all
   - Find a way to automate dual-commander strategy summaries
   - Find a way to integrate scryfall 'tagger' data?
+
+
+## 2024-05-08
+- Card View
+  - Added Roboto Font
+  - Flip is now a separate button
+  - Flip now changes type/ability text
+  - Refresh button is cleaner/more convenient
+  - Some rearranging to keep visual position consistency
 
 
 ## 2024-05-07
