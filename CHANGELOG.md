@@ -24,6 +24,7 @@
   - Flip now changes type/ability text
   - Refresh button is cleaner/more convenient
   - Some rearranging to keep visual position consistency
+  - Fixed bug where selected card of 'name' was treated as a card
 
 
 ## 2024-05-07
