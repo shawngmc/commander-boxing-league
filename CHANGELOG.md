@@ -1,6 +1,9 @@
 ## TODO:
 - Set Stats
   - Convert Std Set Stats query to use Imported Scryfall
+- Card View
+  - Make links absolutely positioned at the bottom with icons
+  - Add mana cost of 'side'
 - Deck Analysis
   - Add Color Identity Check Button to Draft/W2/W1 decks
 - Preprocessor
