@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<!-- Based on https://stackoverflow.com/a/58552334/3245188 -->
+<html>
+
+<head>
+  <base target="_top">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+    rel="stylesheet">
+  <style>
+    body {
+      font-family: Roboto;
+    }
+
+    .reload {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+    }
+
+    #card-name {
+      height: 2em;
+    }
+
+    #card-image {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    #flip-checkbox-wrapper {
+      display: block;
+      width: 50%;
+      margin-top: 4px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Checkbox style from https://getcssscan.com/css-checkboxes-examples */
+    .sliding-checkbox-wrapper .tgl {
+      display: none;
+    }
+
+    .sliding-checkbox-wrapper .tgl,
+    .sliding-checkbox-wrapper .tgl:after,
+    .sliding-checkbox-wrapper .tgl:before,
+    .sliding-checkbox-wrapper .tgl *,
+    .sliding-checkbox-wrapper .tgl *:after,
+    .sliding-checkbox-wrapper .tgl *:before,
+    .sliding-checkbox-wrapper .tgl+.tgl-btn {
+      box-sizing: border-box;
+    }
+
+    .sliding-checkbox-wrapper .tgl::-moz-selection,
+    .sliding-checkbox-wrapper .tgl:after::-moz-selection,
+    .sliding-checkbox-wrapper .tgl:before::-moz-selection,
+    .sliding-checkbox-wrapper .tgl *::-moz-selection,
+    .sliding-checkbox-wrapper .tgl *:after::-moz-selection,
+    .sliding-checkbox-wrapper .tgl *:before::-moz-selection,
+    .sliding-checkbox-wrapper .tgl+.tgl-btn::-moz-selection,
+    .sliding-checkbox-wrapper .tgl::selection,
+    .sliding-checkbox-wrapper .tgl:after::selection,
+    .sliding-checkbox-wrapper .tgl:before::selection,
+    .sliding-checkbox-wrapper .tgl *::selection,
+    .sliding-checkbox-wrapper .tgl *:after::selection,
+    .sliding-checkbox-wrapper .tgl *:before::selection,
+    .sliding-checkbox-wrapper .tgl+.tgl-btn::selection {
+      background: none;
+    }
+
+    .sliding-checkbox-wrapper .tgl+.tgl-btn {
+      outline: 0;
+      display: block;
+      width: 8em;
+      height: 2em;
+      position: relative;
+      cursor: pointer;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    .sliding-checkbox-wrapper .tgl+.tgl-btn:after,
+    .sliding-checkbox-wrapper .tgl+.tgl-btn:before {
+      position: relative;
+      display: block;
+      content: "";
+      width: 50%;
+      height: 100%;
+    }
+
+    .sliding-checkbox-wrapper .tgl+.tgl-btn:after {
+      left: 0;
+    }
+
+    .sliding-checkbox-wrapper .tgl+.tgl-btn:before {
+      display: none;
+    }
+
+    .sliding-checkbox-wrapper .tgl:checked+.tgl-btn:after {
+      left: 50%;
+    }
+
+    .sliding-checkbox-wrapper .tgl-skewed+.tgl-btn {
+      overflow: hidden;
+      transform: skew(-10deg);
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      transition: all 0.2s ease;
+      font-family: sans-serif;
+      background: #86b4d9;
+    }
+
+    .sliding-checkbox-wrapper .tgl-skewed+.tgl-btn:after,
+    .sliding-checkbox-wrapper .tgl-skewed+.tgl-btn:before {
+      transform: skew(10deg);
+      display: inline-block;
+      transition: all 0.2s ease;
+      width: 100%;
+      text-align: center;
+      position: absolute;
+      line-height: 2em;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+    }
+
+    .sliding-checkbox-wrapper .tgl-skewed+.tgl-btn:after {
+      left: 100%;
+      content: attr(data-tg-on);
+    }
+
+    .sliding-checkbox-wrapper .tgl-skewed+.tgl-btn:before {
+      left: 0;
+      content: attr(data-tg-off);
+    }
+
+    .sliding-checkbox-wrapper .tgl-skewed+.tgl-btn:active {
+      background: #888;
+    }
+
+    .sliding-checkbox-wrapper .tgl-skewed+.tgl-btn:active:before {
+      left: -10%;
+    }
+
+    .sliding-checkbox-wrapper .tgl-skewed:checked+.tgl-btn {
+      background: #86d993;
+    }
+
+    .sliding-checkbox-wrapper .tgl-skewed:checked+.tgl-btn:before {
+      left: -100%;
+    }
+
+    .sliding-checkbox-wrapper .tgl-skewed:checked+.tgl-btn:after {
+      left: 0;
+    }
+
+    .sliding-checkbox-wrapper .tgl-skewed:checked+.tgl-btn:active:after {
+      left: 10%;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="card">
+    <img id="card-image" src="" width="240" height="340" />
+    <div id="flip-checkbox-wrapper" class="sliding-checkbox-wrapper">
+      <input id="flip" class="tgl tgl-skewed" type="checkbox" />
+      <label class="tgl-btn" data-tg-off="Flip to Back" data-tg-on="Flip to Front" for="flip"></label>
+    </div>
+    <h3 id="card-name"></h3>
+    <h5 id="card-type"></h5>
+    <h5 id="mana-cost"></h5>
+    <hr />
+    <span id="card-text"></span>
+    <hr />
+    <b>Links</b>
+    <ul>
+      <li><a id="scryfall-link" href="" target="_blank">Scryfall</a>
+      <li><a id="edhrec-link" href="" target="_blank">EDHREC</a>
+      <li><a id="gatherer-link" href="" target="_blank">Gatherer</a>
+    </ul>
+  </div>
+  <div id="message">
+    <h3>No card name selected!</h3>
+    (Top-Left cell of multi-cell)
+  </div>
+  <button id="reload" class="reload">&#x21bb;</button>
+  <script type="module">
+    // imported_scryfall_fields = ["id", "oracle_id", "name", "mana_cost", "cmc", "type_line", "power", "toughness", "colors", "color_identity", "keywords", "set", "collector_number", "rarity", "edhrec_rank", "multiverse_id", "is_double_faced", "oracle_text", "mana_cost_2", "oracle_text_2", "type_line_2", "border_crop_image_uri", "edhrec_url", "gatherer_url", "scryfall_url", "emoji_type", "category", "produced_mana", "colors_2", "border_crop_image_uri_2", "loyalty", "color_indicator", "power_2", "toughness_2", "cmc_2"]
+    let card_data = null;
+
+    // Stop the loop when the window isn't focused, and restart when it comes back to focus.
+    var isFocused = true;
+    window.addEventListener("blur", function () {
+      isFocused = false;
+    });
+    window.addEventListener("focus", function () {
+      isFocused = true;
+      setLocation();
+    });
+
+    function showCardFace(useSecondary) {
+      let tagSuffix = useSecondary ? "_2" : "";
+      document.getElementById("card-image").src = card_data['border_crop_image_uri' + tagSuffix];
+      document.getElementById("card-text").innerText = card_data['oracle_text' + tagSuffix];
+      document.getElementById("card-type").innerText = card_data['type_line' + tagSuffix];
+
+      let mana_refs = parseManaSymbols(card_data['mana_cost' + tagSuffix]);
+      let mana_display = document.getElementById("mana-cost");
+      mana_display.innerText = '';
+      mana_refs.forEach(mana_ref => {
+        let element = document.createElement("img");
+        element.src = mana_ref['svg_uri'];
+        element.style.height = '16px';
+        element.style.width = '16px';
+        element.alt = mana_ref['english'];
+        mana_display.appendChild(element);
+      })
+    }
+
+    const flipper = document.getElementById("flip");
+    flipper.addEventListener('change', (event) => {
+      if (event.currentTarget.checked) {
+        showCardFace(true);
+      } else {
+        showCardFace(false);
+      }
+    });
+
+    const reload_button = document.getElementById("reload");
+    reload_button.addEventListener('click', setLocation);
+
+    function setLocation() {
+      google.script.run
+        .withSuccessHandler(function (result) {
+          if (result != null) {
+            if (card_data === null || result['name'] !== card_data['name']) {
+              // Update visibility
+              card_data = result;
+              document.getElementById("message").style.display = "none";
+              document.getElementById("card").style.display = "block";
+
+              // Set shared card data
+              document.getElementById("card-name").innerText = card_data['name'];
+              document.getElementById("scryfall-link").href = card_data['scryfall_url'];
+              document.getElementById("edhrec-link").href = card_data['edhrec_url'];
+              document.getElementById("gatherer-link").href = card_data['gatherer_url'];
+
+              console.log(card_data);
+              // Currently, this comes over as true or "" :)
+              if (card_data['is_double_faced'] === "") {
+                document.getElementById("flip-checkbox-wrapper").style.visibility = "hidden";
+              } else {
+                document.getElementById("flip-checkbox-wrapper").style.visibility = "visible";
+              }
+              document.getElementById("flip").checked = false;
+              showCardFace(false);
+            }
+          } else {
+            // Update visibility
+            document.getElementById("message").style.display = "block";
+            document.getElementById("card").style.display = "none";
+            card_data = null;
+          }
+          if (isFocused) {
+            setTimeout(setLocation, 2000);
+          }
+        })
+        .withFailureHandler(function (err) {
+          if (isFocused) {
+            setTimeout(setLocation, 1000);
+          }
+        })
+        .getCurrentSelectedCard();
+
+    }
+
+    setLocation();
+
+    const response = await fetch("https://api.scryfall.com/symbology");
+    const scryfallSymbolsRaw = await response.json();
+    const scryfallSymbols = {};
+    scryfallSymbolsRaw.data.forEach(symbol_entry => {
+      scryfallSymbols[symbol_entry['symbol']] = symbol_entry;
+    });
+    console.log(scryfallSymbols);
+
+    function parseManaSymbols(mana_cost) {
+      let imageRefs = [];
+      let mana_elements = mana_cost.split("}");
+      mana_elements.pop();
+      mana_elements.forEach(mana_element => {
+        imageRefs.push(scryfallSymbols[mana_element + "}"]);
+      });
+      return imageRefs;
+    }
+
+  </script>
+</body>
+
+</html>

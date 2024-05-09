@@ -10,23 +10,22 @@
 Card Sidebar
 ***********************************************************************/
 
+var cardViewSidebar = HtmlService
+  .createTemplateFromFile('CardView')
+  .evaluate()
+  .setTitle('Card View')
+  .setWidth(250);
+
 function onOpen() {
   SpreadsheetApp.getUi()
     .createMenu('MTG Tools')
-    .addItem('Open Card View', 'showSidebar')
+    .addItem('Open Card View', 'showCardView')
     .addToUi();
 }
 
-function showSidebar() {
-  // You can use a template to inject initialization data
-  var html = HtmlService
-    .createTemplateFromFile('Sidebar')
-    .evaluate()
-    .setTitle('Card View')
-    .setWidth(300);
-
+function showCardView() {
   SpreadsheetApp.getUi()
-    .showSidebar(html);
+    .showSidebar(cardViewSidebar);
 }
 
 function onSelectionChange() {
@@ -62,7 +61,7 @@ function getCurrentSelectedCard() {
 function getCardByName(name) {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   const sheet = spreadsheet.getSheetByName("ImportedScryfall");
-  const matchRange = sheet.getRange('C:C')
+  const matchRange = sheet.getRange('C2:C')
     .createTextFinder(name)
     .matchEntireCell(true)
     .findNext();
