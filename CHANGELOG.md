@@ -12,19 +12,19 @@
   - Backup Spreadsheet Content in repo
   - Backup Decklists in repo
 - Miscellaneous
-  - Integrate card symbols via the API: https://scryfall.com/docs/api/card-symbols/all
   - Find a way to automate dual-commander strategy summaries
   - Find a way to integrate scryfall 'tagger' data?
 
 
 ## 2024-05-08
 - Card View
-  - Added Roboto Font
+  - Switched to Roboto Font
   - Flip is now a separate button
   - Flip now changes type/ability text
   - Refresh button is cleaner/more convenient
   - Some rearranging to keep visual position consistency
   - Fixed bug where selected card of 'name' was treated as a card
+  - Added Mana Cost using symbols from Scryfall API: https://scryfall.com/docs/api/card-symbols/all
 
 
 ## 2024-05-07
