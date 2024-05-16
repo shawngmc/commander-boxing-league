@@ -3,7 +3,7 @@
   - Convert Std Set Stats query to use Imported Scryfall
 - Card View
   - Parse oracle text and interject icon images
-  - Copy All Cards in imported_scryfall to client; then just transfer the name
+  - Use [animate.css](https://animate.style/) to add a card flip animation
 - Deck Analysis
   - Add Color Identity Check Button to Draft/W2/W1 decks
 - Preprocessor
