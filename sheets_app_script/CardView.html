@@ -369,9 +369,6 @@
       }
     });
 
-    const reload_button = document.getElementById("reload");
-    reload_button.addEventListener('click', checkSelectedCard);
-
     function updateShownCard(found_card) {
       if (found_card !== null) {
         if (card_data === null || (card_data !== null && found_card['name'] !== card_data['name'])) {
