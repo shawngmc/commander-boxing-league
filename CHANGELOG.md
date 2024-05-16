@@ -3,6 +3,7 @@
   - Convert Std Set Stats query to use Imported Scryfall
 - Card View
   - Parse oracle text and interject icon images
+  - Copy All Cards in imported_scryfall to client; then just transfer the name
 - Deck Analysis
   - Add Color Identity Check Button to Draft/W2/W1 decks
 - Preprocessor
@@ -14,6 +15,13 @@
   - Find a way to automate dual-commander strategy summaries
   - Find a way to integrate scryfall 'tagger' data?
 
+
+## 2024-05-16
+- Card View
+  - Added Click or 'R' to reload while sidebar focused
+  - Added loading indicator and preload logic
+  - Now loads all cards at start, but card selection turnaround is MUCH faster
+  - Fixed padding
 
 ## 2024-05-08
 - Card View

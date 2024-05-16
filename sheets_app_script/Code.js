@@ -47,15 +47,8 @@ function onSelectionChange() {
   cache.put('selectedCard', JSON.stringify(card));
 }
 
-function getCurrentSelectedCard() {
-  var cache = CacheService.getUserCache();
-  let card = cache.get('selectedCard');
-  console.log(card);
-  if (card !== null) {
-    card = JSON.parse(card);
-  }
-  console.log(card);
-  return card;
+function getCurrentSelectedCardName() {
+  return SpreadsheetApp.getActiveRange().getValue();
 }
 
 function getCardByName(name) {
@@ -71,6 +64,18 @@ function getCardByName(name) {
   } else {
     return null;
   }
+}
+
+function getAllDBCards(name) {
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = spreadsheet.getSheetByName("ImportedScryfall");
+  const allData = sheet.getDataRange().getValues();
+  let cards = [];
+  allData.shift();
+  allData.forEach(row => {
+    cards.push(mapScryfallCard(row));
+  });
+  return cards;
 }
 
 /***********************************************************************
