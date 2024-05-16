@@ -18,6 +18,7 @@
 ## 2024-05-17
 - Card View
   - Interject MTG symbols in Oracle Text
+  - UI Cleanup - center error, remove reload button
 
 ## 2024-05-16
 - Card View
