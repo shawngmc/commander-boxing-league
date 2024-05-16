@@ -341,37 +341,28 @@
     });
     window.addEventListener("focus", function () {
       isFocused = true;
-      asyncCheckSelectedCard();
+      checkSelectedCard();
     });
     window.addEventListener("keydown", function (event) {
-      console.log(event);
       if(event.keyCode == 82) { 
         console.log("Hey! 'R' event captured; loading new card!");
-        asyncCheckSelectedCard();
+        checkSelectedCard();
         event.preventDefault();
       }
     });
     window.addEventListener("click", function (event) {
-      asyncCheckSelectedCard();
+      checkSelectedCard();
     });
     
     function showCardFace(useSecondary) {
       let tagSuffix = useSecondary ? "_2" : "";
       document.getElementById("card-image").src = card_data['border_crop_image_uri' + tagSuffix];
-      document.getElementById("card-text").innerText = card_data['oracle_text' + tagSuffix];
+      document.getElementById("card-text").innerHTML = injectMTGSymbols(card_data['oracle_text' + tagSuffix]);
+      
       document.getElementById("card-type").innerText = card_data['type_line' + tagSuffix];
 
-      let mana_refs = parseManaSymbols(card_data['mana_cost' + tagSuffix]);
-      let mana_display = document.getElementById("mana-cost");
-      mana_display.innerText = '';
-      mana_refs.forEach(mana_ref => {
-        let element = document.createElement("img");
-        element.src = mana_ref['svg_uri'];
-        element.style.height = '16px';
-        element.style.width = '16px';
-        element.alt = mana_ref['english'];
-        mana_display.appendChild(element);
-      })
+      document.getElementById("mana-cost").innerHTML = injectMTGSymbols(card_data['mana_cost' + tagSuffix]);
+ 
     }
 
     const flipper = document.getElementById("flip");
@@ -384,11 +375,9 @@
     });
 
     const reload_button = document.getElementById("reload");
-    reload_button.addEventListener('click', asyncCheckSelectedCard);
+    reload_button.addEventListener('click', checkSelectedCard);
 
     function updateShownCard(found_card) {
-      console.log(found_card);
-      console.log(card_data);
       if (found_card !== null) {
         if (card_data === null || (card_data !== null && found_card['name'] !== card_data['name'])) {
           card_data = found_card;
@@ -403,7 +392,6 @@
           document.getElementById("edhrec-link").href = card_data['edhrec_url'];
           document.getElementById("gatherer-link").href = card_data['gatherer_url'];
 
-          console.log(card_data);
           // Currently, this comes over as true or "" :)
           if (card_data['is_double_faced'] === "") {
             document.getElementById("flip-checkbox-wrapper").style.visibility = "hidden";
@@ -420,11 +408,11 @@
         card_data = null;
       }
       if (isFocused) {
-        setTimeout(asyncCheckSelectedCard, 2000);
+        setTimeout(checkSelectedCard, 2000);
       } 
     }
 
-    async function asyncCheckSelectedCard() {
+    async function checkSelectedCard() {
       const selected_card = await new Promise(res => {
         google.script.run.withSuccessHandler(res).getCurrentSelectedCardName();
       })
@@ -432,7 +420,7 @@
       updateShownCard(found_card.length > 0 ? found_card[0] : null);
     }
 
-    async function getScryfallSymbols() {
+    async function getMTGSymbolsFromScryfall() {
       const response = await fetch("https://api.scryfall.com/symbology");
       const scryfallSymbolsRaw = await response.json();
       scryfallSymbolsRaw.data.forEach(symbol_entry => {
@@ -440,23 +428,31 @@
       });
     }
 
-    function parseManaSymbols(mana_cost) {
-      let imageRefs = [];
-      let mana_elements = mana_cost.split("}");
-      mana_elements.pop();
-      mana_elements.forEach(mana_element => {
-        imageRefs.push(scryfallSymbols[mana_element + "}"]);
+    function injectMTGSymbols(parseStr) {
+      const regexp = /(\{.+?\})/g;
+      const matchArray = [...parseStr.matchAll(regexp)].reverse();
+      matchArray.forEach(match => {
+        let symbol_ref = scryfallSymbols[match[0]];
+        let element = document.createElement("img");
+        element.src = symbol_ref['svg_uri'];
+        element.style.height = '16px';
+        element.style.width = '16px';
+        element.alt = symbol_ref['english'];
+        console.log(match);
+        console.log(parseStr);
+        parseStr = parseStr.slice(0, match.index) + element.outerHTML + parseStr.slice(match.index + match[0].length);
+        console.log(parseStr);
       });
-      return imageRefs;
+      return parseStr;
     }
 
     async function startApp() {
       const getAllCardData = new Promise(res => {
         google.script.run.withSuccessHandler(res).getAllDBCards();
       })
-      let preload_data = await Promise.all([getAllCardData, getScryfallSymbols()]);
+      let preload_data = await Promise.all([getAllCardData, getMTGSymbolsFromScryfall()]);
       card_list = await preload_data[0];
-      await asyncCheckSelectedCard();
+      await checkSelectedCard();
       document.getElementById("loading-message").style.display = "none";
     }
     await startApp();
