@@ -16,12 +16,6 @@
       padding: 0;
     }
 
-    .reload {
-      position: absolute;
-      top: 0px;
-      right: 0px;
-    }
-
     .ext-icon {
       width: 48px;
       height: 48px;
@@ -74,9 +68,12 @@
       margin-right: auto;
     }
 
-    #message {
+    #error-message {
       padding: 5px;
-      margin: 5px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
     }
 
     #flip-checkbox-wrapper {
@@ -323,11 +320,9 @@
       <div class="gatherer-icon-div"><a id="gatherer-link" href="" target="_blank"><img class="ext-icon" src="https://ih1.redbubble.net/image.2297989095.5823/st,small,507x507-pad,600x600,f8f8f8.webp"></a></div>
     </div>
   </div>
-  <div id="message">
-    <h3>No card name selected!</h3>
-    (Top-Left cell of multi-cell)
+  <div id="error-message">
+    <h3>No card selected!</h3>
   </div>
-  <button id="reload" class="reload" alt="Or type 'R' while the sidebar is focused!">&#x21bb;</button>
   <script type="module">
     // imported_scryfall_fields = ["id", "oracle_id", "name", "mana_cost", "cmc", "type_line", "power", "toughness", "colors", "color_identity", "keywords", "set", "collector_number", "rarity", "edhrec_rank", "multiverse_id", "is_double_faced", "oracle_text", "mana_cost_2", "oracle_text_2", "type_line_2", "border_crop_image_uri", "edhrec_url", "gatherer_url", "scryfall_url", "emoji_type", "category", "produced_mana", "colors_2", "border_crop_image_uri_2", "loyalty", "color_indicator", "power_2", "toughness_2", "cmc_2"]
     let card_data = null;
@@ -383,7 +378,7 @@
           card_data = found_card;
 
           // Update visibility
-          document.getElementById("message").style.display = "none";
+          document.getElementById("error-message").style.display = "none";
           document.getElementById("card").style.display = "block";
 
           // Set shared card data
@@ -403,7 +398,7 @@
         }
       } else {
         // Update visibility
-        document.getElementById("message").style.display = "block";
+        document.getElementById("error-message").style.display = "block";
         document.getElementById("card").style.display = "none";
         card_data = null;
       }
