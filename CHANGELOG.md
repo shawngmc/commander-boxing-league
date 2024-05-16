@@ -16,6 +16,10 @@
   - Find a way to integrate scryfall 'tagger' data?
 
 
+## 2024-05-17
+- Card View
+  - Interject MTG symbols in Oracle Text
+
 ## 2024-05-16
 - Card View
   - Added Click or 'R' to reload while sidebar focused
