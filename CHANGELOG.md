@@ -7,6 +7,16 @@
   - Add Color Identity Check Button to Draft/W2/W1 decks
 - Preprocessor
   - Cleanup old CSVs and cached json automatically
+  - Automate oracle text tagging:
+    - Crime: Yes if any of the following if NOT followed by 'you control'
+      - target permanent/opponent/creature/battle/enchantment/token/artifact/library
+      - any target
+      - enchant land/creature/planeswalker/player/opponent/artifact/enchantment
+    - Draw
+      - Draw (but not drawn)
+    - Tutor
+      - 'search your library'
+      - cycling
 - Git Repo
   - Backup Spreadsheet Content in repo
   - Backup Decklists in repo
