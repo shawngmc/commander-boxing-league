@@ -5,6 +5,11 @@
   - Use [animate.css](https://animate.style/) to add a card flip animation
 - Deck Analysis
   - Add Color Identity Check Button to Draft/W2/W1 decks
+- Pool Management
+  - Add a 'Pool Management' Sidebar
+  - Type in card name with auto-complete
+  - Shows if already in pool
+  - Add dupe increases count; Add new adds a new row
 - Preprocessor
   - Cleanup old CSVs and cached json automatically
   - Automate oracle text tagging:
