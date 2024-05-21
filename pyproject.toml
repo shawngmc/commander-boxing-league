@@ -15,7 +15,3 @@ dependencies = [
 [project.urls]
 "Homepage" = "https://github.com/shawngmc/otj-commander-boxing-league"
 "Bug Tracker" = "https://github.com/shawngmc/otj-commander-boxing-league/issues"
-
-[build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
