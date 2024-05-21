@@ -23,6 +23,7 @@ jobs:
     - name: Run data preprocessor
       run: |
         python -m pip install --upgrade pip
+        python -m pip install build
         python preprocess_data.py
     - name: Release
       uses: softprops/action-gh-release@v2
