@@ -6,7 +6,6 @@
 - Deck Analysis
   - Add Color Identity Check Button to Draft/W2/W1 decks
 - Pool Management
-  - Add Set Selection Dropdown
   - Actually add row or increment count :)
 - Preprocessor
   - Cleanup old CSVs and cached json automatically
@@ -85,6 +84,8 @@
 ## 2024-05-21
 - Preprocessor
   - Added GH Action to generate card DB as a release
+- Pool Management
+  - Added Set Selector
 
 ## 2024-05-20
 - Pool Management
