@@ -6,10 +6,8 @@
 - Deck Analysis
   - Add Color Identity Check Button to Draft/W2/W1 decks
 - Pool Management
-  - Add a 'Pool Management' Sidebar
-  - Type in card name with auto-complete
-  - Shows if already in pool
-  - Add dupe increases count; Add new adds a new row
+  - Add Set Selection Dropdown
+  - Actually add row or increment count :)
 - Preprocessor
   - Cleanup old CSVs and cached json automatically
   - Automate oracle text tagging:
@@ -83,6 +81,13 @@
 - Miscellaneous
   - Find a way to automate dual-commander strategy summaries
   - Find a way to integrate scryfall 'tagger' data?
+
+## 2024-05-20
+- Pool Management
+  - Started New View
+  - Allows Card Lookup via Autocomplete
+  - Shows Count
+  - Passes card back to be added
 
 
 ## 2024-05-17
