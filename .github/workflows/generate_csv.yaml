@@ -1,0 +1,36 @@
+name: Create Release On Demand
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  packages: write
+  contents: write
+
+jobs:
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Get current date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.x'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+    - name: Run data preprocessor
+      run: |
+        python preprocess_data.py
+    - name: Release
+      uses: softprops/action-gh-release@v2
+      with:
+        files: |
+          otj-boxing-cards.csv
+        name: card-csv-${{ steps.date.outputs.date }}
