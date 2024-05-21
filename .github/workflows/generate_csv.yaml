@@ -28,4 +28,4 @@ jobs:
       with:
         files: |
           otj-boxing-cards.csv
-        tag: card-csv-${{ steps.date.outputs.date }}
+        tag_name: card-csv-${{ steps.date.outputs.date }}
