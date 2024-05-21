@@ -82,13 +82,16 @@
   - Find a way to automate dual-commander strategy summaries
   - Find a way to integrate scryfall 'tagger' data?
 
+## 2024-05-21
+- Preprocessor
+  - Added GH Action to generate card DB as a release
+
 ## 2024-05-20
 - Pool Management
   - Started New View
   - Allows Card Lookup via Autocomplete
   - Shows Count
   - Passes card back to be added
-
 
 ## 2024-05-17
 - Card View
