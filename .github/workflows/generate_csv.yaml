@@ -1,8 +1,6 @@
 name: Create Release On Demand
 
-on:
-  release:
-    types: [published]
+on: workflow_dispatch
 
 permissions:
   packages: write
