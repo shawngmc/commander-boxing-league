@@ -289,7 +289,7 @@ for card in filtered_cards:
             keys.append(card_key)
 
 # Write the CSV
-with open(f"otj-boxing-cards-{datetime.now().strftime('%Y-%m-%d')}.csv", 'w', newline='', encoding = "utf-8") as output_file:
+with open(f"otj-boxing-cards.csv", 'w', newline='', encoding = "utf-8") as output_file:
     dict_writer = csv.DictWriter(output_file, keys)
     dict_writer.writeheader()
     dict_writer.writerows(filtered_cards)
