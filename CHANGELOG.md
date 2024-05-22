@@ -5,8 +5,6 @@
   - Use [animate.css](https://animate.style/) to add a card flip animation
 - Deck Analysis
   - Add Color Identity Check Button to Draft/W2/W1 decks
-- Pool Management
-  - Actually add row or increment count :)
 - Preprocessor
   - Cleanup old CSVs and cached json automatically
   - Add oracle text and keyword tagging
