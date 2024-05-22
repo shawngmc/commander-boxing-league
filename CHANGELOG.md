@@ -17,6 +17,12 @@
   - Find a way to automate dual-commander strategy summaries
   - Find a way to integrate scryfall 'tagger' data?
 
+## 2024-05-22
+- Pool Management
+  - Actually adds or updates rows
+  - Rebuilds the Pool sheet filter
+  - Better behavior on the set dropdown 
+
 ## 2024-05-21
 - Preprocessor
   - Added GH Action to generate card DB as a release
