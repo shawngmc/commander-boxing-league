@@ -7,7 +7,7 @@
 /*global SCRYFALL*/
 
 /***********************************************************************
-Card Sidebar
+Sidebars
 ***********************************************************************/
 
 var cardViewSidebar = HtmlService
@@ -16,16 +16,28 @@ var cardViewSidebar = HtmlService
   .setTitle('Card View')
   .setWidth(250);
 
+var poolManagementSidebar = HtmlService
+  .createTemplateFromFile('PoolManagement')
+  .evaluate()
+  .setTitle('Pool Management')
+  .setWidth(250);
+
 function onOpen() {
   SpreadsheetApp.getUi()
     .createMenu('MTG Tools')
     .addItem('Open Card View', 'showCardView')
+    .addItem('Open Pool Management', 'showPoolManagment')
     .addToUi();
 }
 
 function showCardView() {
   SpreadsheetApp.getUi()
     .showSidebar(cardViewSidebar);
+}
+
+function showPoolManagment() {
+  SpreadsheetApp.getUi()
+    .showSidebar(poolManagementSidebar);
 }
 
 function onSelectionChange() {
@@ -66,7 +78,7 @@ function getCardByName(name) {
   }
 }
 
-function getAllDBCards(name) {
+function getAllDBCards() {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   const sheet = spreadsheet.getSheetByName("ImportedScryfall");
   const allData = sheet.getDataRange().getValues();
@@ -76,6 +88,104 @@ function getAllDBCards(name) {
     cards.push(mapScryfallCard(row));
   });
   return cards;
+}
+
+function getPoolCards() {
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = spreadsheet.getSheetByName("Pool");
+  const poolData = sheet.getDataRange().getValues();
+  let cards = [];
+  poolData.shift();
+  poolData.forEach(row => {
+    cards.push(mapPoolCard(row));
+  });
+  return cards;
+}
+
+/***********************************************************************
+Pool Management
+***********************************************************************/
+function addCardToPool(card_name, card_set) {
+  let name_column = 1;
+  let set_column = 3;
+  let count_column = 11;
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = spreadsheet.getSheetByName("ImportedScryfall");
+  let finder = sheet.getRange('C2:C')
+    .createTextFinder(card_name)
+    .matchEntireCell(true);
+  console.log(`Adding card ${card_name} from ${card_set}`);
+  let matchRange = finder.findNext();
+  let matchCard = null;
+  while (matchRange !== null) {
+    let card_data = mapScryfallCard(sheet.getRange(`${matchRange.getRowIndex()}:${matchRange.getRowIndex()}`).getValues().flat());
+    if (card_data['set'] === card_set.toLowerCase()) {
+      console.log(`Found DB match ${JSON.stringify(card_data)}`);
+      matchCard = card_data;
+      break;
+    } else {
+      console.log(`Did not DB match ${JSON.stringify(card_data)}`);
+      matchRange = finder.findNext();
+    }
+  }
+  
+  if (matchCard !== null) {
+    // See if card is in pool
+    sheet = spreadsheet.getSheetByName("Pool");
+    let finder = sheet.getRange('A2:A')
+      .createTextFinder(card_name)
+      .matchEntireCell(true);
+    matchRange = finder.findNext();
+    let found = false;
+    while (matchRange !== null) {
+      let existing_pool_card = mapPoolCard(sheet.getRange(`${matchRange.getRowIndex()}:${matchRange.getRowIndex()}`).getValues().flat());
+      if (existing_pool_card['set'] === card_set.toUpperCase()) {
+        console.log(`Found existing pool match ${JSON.stringify(existing_pool_card)}`);
+        found = true;
+        console.log("Update count in row");
+        let count_column = 11;
+        edit_range = sheet.getRange(matchRange.getRowIndex(), count_column, 1, 1);
+        sheet.setActiveRange(edit_range);
+        sheet.getActiveCell().setValue(sheet.getActiveCell().getValue() + 1);
+        break;
+      } else {
+        console.log(`Did not pool match ${JSON.stringify(existing_pool_card)}`);
+        matchRange = finder.findNext();
+      }
+    }
+    if (!found) {
+      console.log("Add as new row; cheat by copying the last row");
+      let row = sheet.getLastRow();
+      var column = sheet.getLastColumn();
+      
+      // The range represents the current row from the first to last column.
+      var range = sheet.getRange(row, 1, 1, column);
+      
+      // Insert a blank row after the current one.
+      sheet.insertRowsAfter(row, 1);
+      
+      // Copy the current row to the row we just added. When contentsOnly is true, a "paste values" occurs. We want the functions, so it's set to false.
+      range.copyTo(sheet.getRange(row + 1, 1, 1, column), {contentsOnly:false});
+      
+      // Move to column 1 of the new row and set the card name, set and count
+      let edit_range = sheet.getRange(row + 1, name_column, 1, 1);
+      sheet.setActiveRange(edit_range);
+      sheet.getActiveCell().setValue(matchCard["name"]);
+      edit_range = sheet.getRange(row + 1, set_column, 1, 1);
+      sheet.setActiveRange(edit_range);
+      sheet.getActiveCell().setValue(matchCard["set"].toUpperCase());
+      edit_range = sheet.getRange(row + 1, count_column, 1, 1);
+      sheet.setActiveRange(edit_range);
+      sheet.getActiveCell().setValue(1);
+    }
+  } else {
+    throw new Error(`Cannot find ${card_name} in ${card_set}`);
+  }
+
+  // Rebuild the filter on the pool sheet; we'll lose current filter state, but that's OK
+  sheet = spreadsheet.getSheetByName("Pool");
+  sheet.getFilter().remove();
+  sheet.getDataRange().createFilter();
 }
 
 /***********************************************************************
