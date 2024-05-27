@@ -3,6 +3,7 @@
   - Convert Std Set Stats query to use Imported Scryfall
 - Card View
   - Use [animate.css](https://animate.style/) to add a card flip animation
+  - Handle Adventure cards properly (dual face, only one image)
 - Deck Analysis
   - Add Color Identity Check Button to Draft/W2/W1 decks
 - Preprocessor
