@@ -33,6 +33,11 @@ else:
 print(f"Bulk card count: {len(cards)}")
 
 standard_sets = [
+    "BLB",
+    "BLC",
+    "OTJ",
+    "OTP",
+    "BIG",
     "MKM",
     "MKC",
     "LCI",
@@ -41,6 +46,7 @@ standard_sets = [
     "WOE",
     "WOC",
     "WOT",
+    "MAT",
     "MOM",
     "MOC",
     "MUL",
@@ -52,19 +58,7 @@ standard_sets = [
     "BOT",
     "DMU",
     "DMC",
-    "SNC",
-    "NCC",
-    "NEO",
-    "NEC",
-    "VOW",
-    "VOC",
-    "MID",
-    "MIC",
-    "OTJ",
-    "OTP",
-    "BIG",
     "SPG",
-    "MAT",
     "PLST"
 ]
 
